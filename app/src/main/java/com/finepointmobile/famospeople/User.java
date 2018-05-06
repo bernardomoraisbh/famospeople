@@ -1,5 +1,10 @@
 package com.finepointmobile.famospeople;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+@Entity
 public class User {
 
     public User(String firstName, String lastName, String emai) {
@@ -8,12 +13,16 @@ public class User {
         this.emai = emai;
     }
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @ColumnInfo(name = "first_name")
     private String firstName;
 
+    @ColumnInfo(name = "last_name")
     private String lastName;
 
+    @ColumnInfo(name = "email")
     private String emai;
 
     public int getId() {

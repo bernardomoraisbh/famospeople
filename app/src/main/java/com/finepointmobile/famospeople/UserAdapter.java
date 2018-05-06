@@ -1,5 +1,6 @@
 package com.finepointmobile.famospeople;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrador on 23/04/2018.
@@ -14,9 +16,13 @@ import java.util.ArrayList;
 
 class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
-    ArrayList<User> users;
+    List<User> users;
+    private LayoutInflater mInflater;
+    private ItemClickListener mClickListener;
 
-    public UserAdapter(ArrayList<User> users){
+
+    public UserAdapter(Context context, List<User> users){
+        this.mInflater = LayoutInflater.from(context);
         this.users = users;
     }
 
@@ -40,15 +46,28 @@ class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         return users.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    // allows clicks events to be caught
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView firstName;
         public TextView lastName;
         public TextView email;
+
         public ViewHolder(View itemView) {
             super(itemView);
             firstName = itemView.findViewById(R.id.first_name);
             lastName = itemView.findViewById(R.id.last_name);
             email = itemView.findViewById(R.id.email);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mClickListener != null)
+                mClickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }
